@@ -23,10 +23,9 @@ bot.start(async (ctx) => {
   await User.create({
     telegramId: String(user.id),
     username: user.username,
+    vpn_server: "this is a test config",
     first_name: user.first_name,
   });
-
-  ctx.reply("🎉 سلام! ثبت‌نام شدی.");
 
   // پیام خوش‌آمدگویی با ۴ دکمه
   await ctx.reply(`
@@ -67,7 +66,7 @@ bot.start(async (ctx) => {
   );
 });
 
-// هندل کردن دکمه‌ها
+// when user clicked on register button
 bot.action('register', (ctx) => {
   ctx.answerCbQuery(); // to remove loading on button click
   waitingForName.add(ctx.from.id); // mark that this user should send name next
@@ -80,8 +79,21 @@ bot.on('text', (ctx) => {
     const userName = ctx.message.text;
     waitingForName.delete(ctx.from.id);
 
-    // Save userName as you want (DB, in-memory, etc.)
-    ctx.reply(`Thanks, ${userName}! Your name has been saved.`);
+    // Save userName in dataBase
+
+    const updatedUser = User.findOneAndUpdate({
+      telegramId: String(ctx.from.id),
+      first_name: userName,
+      new: true,
+    });
+
+    if (updatedUser)
+    {
+      ctx.reply(`شما با موفقیت ثبت نام شدید`);
+      ctx.reply(`کانفیگ رایگن یک روزه شما در پیام بعدی آمده است`);
+      ctx.reply(User.findOne(ctx.from.id).vpn_server);
+    }
+
     // Example: save to some object or DB here
 
   } else {

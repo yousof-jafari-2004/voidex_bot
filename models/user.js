@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     telegramId: { type: String, required: true, unique: true },
     username: String,
     first_name: String,
+    vpn_server: String,
     joinedAt: { type: Date, default: Date.now }
 });
 
