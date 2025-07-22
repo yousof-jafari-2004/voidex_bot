@@ -7,7 +7,12 @@ const userSchema = new mongoose.Schema({
     vpn_server: String,
     phoneNumber: String,
     plan: String,
+    service: String,
     isPlanExpired: Boolean,
+    isAdmin: Boolean,
+    recievedGift: Boolean,
+    planStartedDate: { type:Date },
+    planExpiredDate: {type:Date},
     joinedAt: { type: Date, default: Date.now }
 });
 
