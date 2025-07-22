@@ -1,6 +1,9 @@
+require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
 const axios = require('axios');
 const bot = new Telegraf('8187800329:AAHpRr0ke2CHDSD6Y-EDN9hTgjPEFREgsyk');
+const mongoose = require('mongoose');
+const User = require('./models/user');
 
 // server variables
 const hostName = "http://example.com/";
