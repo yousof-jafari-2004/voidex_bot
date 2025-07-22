@@ -81,7 +81,6 @@ bot.on('text', async (ctx) => {
 
     try {
       const updatedUser = await User.findOneAndUpdate(
-        { telegramId: String(ctx.from.id) },
         { first_name: userName },
         { new: true }
       );
