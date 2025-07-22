@@ -74,30 +74,32 @@ bot.action('register', (ctx) => {
 });
 
 // Listen to text messages
-bot.on('text', (ctx) => {
+bot.on('text', async (ctx) => {
   if (waitingForName.has(ctx.from.id)) {
     const userName = ctx.message.text;
     waitingForName.delete(ctx.from.id);
 
-    // Save userName in dataBase
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { telegramId: String(ctx.from.id) },
+        { first_name: userName },
+        { new: true }
+      );
 
-    const updatedUser = User.findOneAndUpdate({
-      telegramId: String(ctx.from.id),
-      first_name: userName,
-      new: true,
-    });
-
-    if (updatedUser)
-    {
-      ctx.reply(`شما با موفقیت ثبت نام شدید`);
-      ctx.reply(`کانفیگ رایگن یک روزه شما در پیام بعدی آمده است`);
-      ctx.reply(User.findOne(ctx.from.id).vpn_server);
+      if (updatedUser) {
+        await ctx.reply(`✅ شما با موفقیت ثبت‌نام شدید`);
+        await ctx.reply(`🎁 کانفیگ رایگان یک‌روزه شما:`);
+        await ctx.reply(updatedUser.vpn_server); // از updatedUser استفاده کن
+      } else {
+        await ctx.reply('❌ کاربر یافت نشد. لطفاً اول /start رو بزنید.');
+      }
+    } catch (err) {
+      console.error('خطا در آپدیت:', err);
+      ctx.reply('🚫 خطایی رخ داد، لطفاً بعداً تلاش کنید.');
     }
 
-    // Example: save to some object or DB here
-
   } else {
-    ctx.reply('Send /start and press Register to begin.');
+    ctx.reply('❗ لطفاً ابتدا /start را ارسال کرده و دکمه ثبت‌نام را بزنید.');
   }
 });
 
