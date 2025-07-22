@@ -264,15 +264,15 @@ bot.on('text', async (ctx) => {
     await User.findOneAndUpdate(
       { telegramId: String(userId) },
       { phoneNumber: text },
-      { new: true }
+      { recievedGift: true }
     );
 
     const theUser = await User.findOne({ telegramId: String(userId) });
 
     await ctx.reply(`✅ شماره شما ذخیره شد: ${text}`);
     await ctx.reply(`🎁 این هم کانفیگ تست رایگان شما`);
-    return ctx.reply(`${theUser.vpn_server}`);
-    await ctx.reply(`توجه کنید که این کانفیگ فقط تا ۲۴ ساعت آینده فعال هست و بعد از اون غیر فعال میشه`);
+    await ctx.reply(`${theUser.vpn_server}`);
+    return await ctx.reply(`توجه کنید که این کانفیگ فقط تا ۲۴ ساعت آینده فعال هست و بعد از اون غیر فعال میشه`);
   }
 
   // اگر کاربر در روند ثبت‌نام نبود
