@@ -20,12 +20,16 @@ const waitingForName = new Set();
 bot.start(async (ctx) => {
   const user = ctx.from;
 
+  const existingUser = await User.findOne({ telegramId: String(user.id) });
+
+  if (!existingUser) {
   await User.create({
     telegramId: String(user.id),
     username: user.username,
     vpn_server: "this is a test config",
     first_name: user.first_name,
   });
+  }
 
   // پیام خوش‌آمدگویی با ۴ دکمه
   await ctx.reply(`
