@@ -83,67 +83,43 @@ bot.action('register', (ctx) => {
 
 // Listen to text messages
 bot.on('text', async (ctx) => {
-  if (waitingForName.has(ctx.from.id)) {
-    const userName = ctx.message.text;
-    waitingForName.delete(ctx.from.id);
-
-    try {
-      let updatedUser = await User.updateOne(
-        { telegramId: String(ctx.from.telegramId) }, 
-        { $set: { first_name: userName } }
-      )
-
-      // درخواست شماره
-      return ctx.reply('لطفاً شماره تماس خود را ارسال کنید:', {
-        reply_markup: {
-          keyboard: [[{ text: '📱 ارسال شماره تماس', request_contact: true }]],
-          resize_keyboard: true,
-          one_time_keyboard: true,
-        },
-      });
-    //   if (updatedUser) {
-    //     let newUser = User.findOne(String(ctx.from.telegramId));
-    //     await ctx.reply(`✅ شما با موفقیت ثبت‌نام شدید`);
-    //     await ctx.reply(`🎁 کانفیگ رایگان یک‌روزه شما:`);
-    //     await ctx.reply(newUser.vpn_server); // از updatedUser استفاده کن
-    //   } else {
-    //     await ctx.reply('❌ کاربر یافت نشد. لطفاً اول /start رو بزنید.');
-    //   }
-    } catch (err) {
-      console.error('خطا در آپدیت:', err);
-      ctx.reply('🚫 خطایی رخ داد، لطفاً بعداً تلاش کنید.');
-    }
-
-  } else {
-    ctx.reply('❗ لطفاً ابتدا /start را ارسال کرده و دکمه ثبت‌نام را بزنید.');
-  }
-
-  if (waitingForPhone.has(userId)) {
-    ctx.reply('لطفا از دکمه "📱 ارسال شماره تماس" استفاده کنید.');
-  }
-
-});
-
-bot.on('contact', async (ctx) => {
   const userId = ctx.from.id;
+  const text = ctx.message.text;
 
-  if (!waitingForPhone.has(userId)) return;
+  // مرحله گرفتن نام
+  if (waitingForName.has(userId)) {
+    waitingForName.delete(userId);
+    waitingForPhone.add(userId);
 
-  const phoneNumber = ctx.message.contact.phone_number;
+    // ذخیره نام
+    await User.findOneAndUpdate(
+      { telegramId: String(userId) },
+      { first_name: text },
+      { new: true }
+    );
 
-  // ذخیره شماره تماس در دیتابیس
-  await User.findOneAndUpdate(
-    { telegramId: String(userId) },
-    { phone: phoneNumber },
-    { new: true }
-  );
+    return ctx.reply('✅ نام ذخیره شد. حالا لطفاً شماره تماس خود را وارد کنید:');
+  }
 
-  waitingForPhone.delete(userId);
+  // مرحله گرفتن شماره
+  if (waitingForPhone.has(userId)) {
+    waitingForPhone.delete(userId);
 
-  ctx.reply(`✅ شماره تماس شما با موفقیت ذخیره شد: ${phoneNumber}`);
-  ctx.reply(`🎁 اینم کانفیگ رایگان تست یک روزه شما:`);
-  ctx.reply(`🔐 کانفیگ: your-vpn-config`);
+    // ذخیره شماره
+    await User.findOneAndUpdate(
+      { telegramId: String(userId) },
+      { phone: text },
+      { new: true }
+    );
+
+    ctx.reply(`✅ شماره شما ذخیره شد: ${text}`);
+    return ctx.reply(`🎁 این هم کانفیگ تست رایگان شما:\n\nvpn-server-test-config`);
+  }
+
+  // اگه توی حالت ثبت‌نام نیست
+  ctx.reply('برای شروع دستور /start رو بفرست و روی دکمه "ثبت‌نام" بزن.');
 });
+
 
 
 
