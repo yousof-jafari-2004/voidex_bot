@@ -5,6 +5,9 @@ const userSchema = new mongoose.Schema({
     username: String,
     first_name: String,
     vpn_server: String,
+    phoneNumber: String,
+    plan: String,
+    isPlanExpired: Boolean,
     joinedAt: { type: Date, default: Date.now }
 });
 
