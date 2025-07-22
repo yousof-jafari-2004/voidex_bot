@@ -25,7 +25,7 @@ bot.start(async (ctx) => {
     username: user.username,
     first_name: user.first_name,
   });
-  
+
   ctx.reply("🎉 سلام! ثبت‌نام شدی.");
 
   // پیام خوش‌آمدگویی با ۴ دکمه
@@ -95,4 +95,4 @@ bot.on('text', (ctx) => {
 // bot.action('services', (ctx) => ctx.reply('لیست خدمات ما: ...'));
 
 bot.launch();
-console.log("ربات اجرا شد.");
+console.log("ربات اجرا شد. ها ها ها ها");
