@@ -104,7 +104,7 @@ bot.on('text', async (ctx) => {
 
     await User.findOneAndUpdate(
       { telegramId: String(userId) },
-      { phone: text },
+      { phoneNumber: text },
       { new: true }
     );
 
