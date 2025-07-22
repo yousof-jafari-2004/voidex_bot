@@ -84,8 +84,8 @@ bot.on('text', async (ctx) => {
     waitingForName.delete(ctx.from.id);
 
     try {
-      const updatedUser = await User.findOneAndUpdate(
-        { telegramId: ctx.from.telegramId },
+      let updatedUser = await User.findOneAndUpdate(
+        { telegramId: String(ctx.from.telegramId) },
         { first_name: userName },
         { new: true }
       );
