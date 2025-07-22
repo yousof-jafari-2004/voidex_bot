@@ -1,29 +1,32 @@
 require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
 const axios = require('axios');
-const bot = new Telegraf('8187800329:AAHpRr0ke2CHDSD6Y-EDN9hTgjPEFREgsyk');
 const mongoose = require('mongoose');
 const User = require('./models/user');
 
+
+// connect to mongoose server
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log('✅ MongoDB وصل شد'))
+  .catch((err) => console.error('❌ MongoDB ارور:', err));
+  
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
 // server variables
-const hostName = "http://example.com/";
 const waitingForName = new Set();
 
-
+// when user /start the bot
 bot.start(async (ctx) => {
   const user = ctx.from;
 
-  // ارسال اطلاعات کاربر به سرور PHP
-  try {
-    await axios.post(`${hostName}save_user.php`, {
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      username: user.username
-    });
-  } catch (err) {
-    console.log("خطا در ارسال اطلاعات به PHP:", err.message);
-  }
+  await User.create({
+    telegramId: String(user.id),
+    username: user.username,
+    first_name: user.first_name,
+  });
+  
+  ctx.reply("🎉 سلام! ثبت‌نام شدی.");
 
   // پیام خوش‌آمدگویی با ۴ دکمه
   await ctx.reply(`
