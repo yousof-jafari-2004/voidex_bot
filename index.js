@@ -112,8 +112,11 @@ bot.on('text', async (ctx) => {
       { new: true }
     );
 
+    let theUser = User.findOne({ telegramId: String(userId) });
+
     ctx.reply(`✅ شماره شما ذخیره شد: ${text}`);
-    return ctx.reply(`🎁 این هم کانفیگ تست رایگان شما:\n\nvpn-server-test-config`);
+    ctx.reply(`🎁 ین هم کانفیگ تست رایگان شما`);
+    return ctx.reply(theUser.vpn_server);
   }
 
   // اگه توی حالت ثبت‌نام نیست
