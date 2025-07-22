@@ -84,11 +84,10 @@ bot.on('text', async (ctx) => {
     waitingForName.delete(ctx.from.id);
 
     try {
-      let updatedUser = await User.findOneAndUpdate(
-        { telegramId: String(ctx.from.telegramId) },
-        { first_name: userName },
-        { new: true }
-      );
+      let updatedUser = await User.updateOne(
+        { telegramId: String(ctx.from.telegramId) }, 
+        { $set: { first_name: userName } }
+      )
 
       if (updatedUser) {
         await ctx.reply(`✅ شما با موفقیت ثبت‌نام شدید`);
