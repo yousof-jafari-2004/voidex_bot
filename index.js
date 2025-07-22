@@ -116,7 +116,7 @@ bot.on('text', async (ctx) => {
 
     ctx.reply(`✅ شماره شما ذخیره شد: ${text}`);
     ctx.reply(`🎁 ین هم کانفیگ تست رایگان شما`);
-    return ctx.reply(theUser.vpn_server);
+    return ctx.reply(theUser);
   }
 
   // اگه توی حالت ثبت‌نام نیست
