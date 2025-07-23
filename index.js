@@ -331,7 +331,7 @@ bot.on('text', async (ctx) => {
 bot.on('photo', async (ctx) => {
   const userId = ctx.from.id;
 
-  const userData = User.findOne({ telegramId: userId });
+  const userData = await User.findOne({ telegramId: userId });
 
   // عکس‌ها به صورت آرایه‌ای از سایزهای مختلف میان، ما بزرگ‌ترین رو می‌گیریم:
   const largestPhoto = ctx.message.photo[ctx.message.photo.length - 1];
