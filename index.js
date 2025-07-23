@@ -85,7 +85,7 @@ bot.start(async (ctx) => {
   }
 
   // check if the user is admin or not
-  (ADMIN_ID == ctx.from.id) ? isAdmin == true : false;
+  (ADMIN_ID == ctx.from.id) ? isAdmin = true : isAdmin =false;
 
   // تنظیم منوی چسبان
   setupPersistentMenu();
