@@ -84,16 +84,11 @@ bot.start(async (ctx) => {
     AUTH = existingUser.phoneNumber == '' ? false : true;
   }
 
-  ctx.reply(ADMIN_ID);
-  ctx.reply(ctx.from.id);
-  ctx.reply(ADMIN_ID == ctx.from.id);
   // check if the user is admin or not
   if(ADMIN_ID == ctx.from.id)
   {
-    ctx.reply('true');
     isAdmin = true
   }else {
-    ctx.reply('false')
     isAdmin = false;
   }
 
@@ -204,7 +199,6 @@ bot.hears(['📝 ثبت‌نام (دریافت هدیه)', '/register'], async (
   {
     return ctx.reply('شما قبلا هدیه خود را دریافت کرده اید');
   }else {
-    ctx.answerCbQuery();
     waitingForName.add(ctx.from.id);
     ctx.reply('لطفا نام خود را وارد کنید');
   }
