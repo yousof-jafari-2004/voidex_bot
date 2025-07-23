@@ -727,6 +727,103 @@ bot.on('text', async (ctx) => {
   ctx.reply('برای شروع دستور /start رو بفرست و روی دکمه "ثبت‌نام" بزن.');
 });
 
+let price = 0;
+
+// choose the service
+bot.action('basic', (ctx) => {
+  ctx.reply(`سرویس مورد نظر را انتخاب کنید
+    شما میتوانید با ارتباط با پشتیبانی حجم بسته خود را افزایش دهید`,
+    Markup.inlineKeyboard([
+      [Markup.button.callback('سرویس یک ماهه | ۶۸ هزار تومان', '1_mounth_b')],
+      [Markup.button.callback('سرویس سه ماهه | ۱۷۸ هزار تومان', '3_mounth_b')],
+      [Markup.button.callback('سرویس شش ماهه | ۳۵۶ هزار تومان', '6_mounth_b')],
+    ])
+  );
+});
+bot.action('pro', (ctx) => {
+  ctx.reply(`سرویس مورد نظر را انتخاب کنید`,
+    Markup.inlineKeyboard([
+      [Markup.button.callback('سرویس یک ماهه | ۹۸ هزار تومان', '1_mounth_p')],
+      [Markup.button.callback('سرویس سه ماهه | ۲۶۸ هزار تومان', '3_mounth_p')],
+      [Markup.button.callback('سرویس شش ماهه | ۵۳۶ هزار تومان', '6_mounth_p')],
+    ])
+  );
+});
+bot.action('vip', (ctx) => {
+  ctx.reply(`سرویس مورد نظر را انتخاب کنید`,
+    Markup.inlineKeyboard([
+      [Markup.button.callback('سرویس یک ماهه | ۱۳۸ هزار تومان', '1_mounth_v')],
+      [Markup.button.callback('سرویس سه ماهه | ۳۸۸ هزار تومان', '3_mounth_v')],
+      [Markup.button.callback('سرویس شش ماهه | ۷۷۶ هزار تومان', '6_mounth_v')],
+    ])
+  );
+});
+
+const payDetailsMessage = botFuncs => {
+  botFuncs.reply(`
+    لطفا مبلغ ${price} تومان را به شماره کارت زیر انتقال داده و تصویر رسید را ارسال کنید
+    سرویس مورد نظر تا ۱ ساعت بعد از ارسال تصویر به صورت خودکار فعال سازی میشود و توسط همین بات تلگرام به شما اطلاع داده میشود
+    ___________________
+    شماره کارت:
+    5892-1014-5434-6582
+    حسین جعفری
+    ___________________
+    پس از فعال سازی شما میتوانید با دستور /currentService اطلاعات بسته خود را لحظه به لحظه بررسی کنید
+  `)
+}
+
+// basic plan
+bot.action('1_mounth_b', (ctx) => {
+  price = 68;
+  userPlanRequest = '1_mounth_b';
+  payDetailsMessage(ctx);
+});
+bot.action('3_mounth_b', (ctx) => {
+  price = 178;
+  userPlanRequest = '3_mounth_b';
+  payDetailsMessage(ctx);
+});
+bot.action('6_mounth_b', (ctx) => {
+  price = 356;
+  userPlanRequest = '6_mounth_b';
+  payDetailsMessage(ctx);
+});
+
+// pro plan
+bot.action('1_mounth_p', (ctx) => {
+  price = 98;
+  userPlanRequest = '1_mounth_p';
+  payDetailsMessage(ctx);
+});
+bot.action('3_mounth_p', (ctx) => {
+  price = 268;
+  userPlanRequest = '3_mounth_p';
+  payDetailsMessage(ctx);
+});
+bot.action('6_mounth_p', (ctx) => {
+  price = 536;
+  userPlanRequest = '6_mounth_p';
+  payDetailsMessage(ctx);
+});
+
+// vip plan
+bot.action('1_mounth_v', (ctx) => {
+  price = 138;
+  userPlanRequest = '1_mounth_v';
+  payDetailsMessage(ctx);
+});
+bot.action('3_mounth_v', (ctx) => {
+  price = 388;
+  userPlanRequest = '3_mounth_v';
+  payDetailsMessage(ctx);
+});
+bot.action('6_mounth_v', (ctx) => {
+  price = 776;
+  userPlanRequest = '6_mounth_v';
+  payDetailsMessage(ctx);
+});
+
+
 // بقیه کدها دقیقاً مانند قبل باقی می‌مانند...
 // [همه کدهای قبلی شما از اینجا به بعد بدون تغییر باقی می‌مانند]
 
