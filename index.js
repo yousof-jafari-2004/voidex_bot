@@ -276,10 +276,6 @@ bot.action('myPlan', async ctx => {
 bot.action('register', async (ctx) => {
   let currentUser = await User.findOne({telegramId: String(ctx.from.id)});
 
-  ctx.reply(JSON.stringify(currentUser));
-  ctx.reply(currentUser.recievedGift);
-  ctx.reply(currentUser.recievedGift ? 'true' : 'false');
-
   // if user already claimed his gift don't give it again
   if(currentUser.recievedGift)
   {
