@@ -49,7 +49,6 @@ bot.start(async (ctx) => {
 
   await ctx.reply(
     `
-{name: ${id}; first name: ${first_name} , user name: ${username} }
 👋 به ربات VoidNet خوش آمدید!
 با ما اینترنتی امن، سریع و بدون محدودیت را تجربه کنید.
 🌟 امتحان رایگان:
@@ -277,6 +276,7 @@ bot.action('myPlan', async ctx => {
 bot.action('register', async (ctx) => {
   let currentUser = await User.findOne({telegramId: String(ctx.from.id)});
 
+  ctx.reply(JSON.stringify(currentUser));
   ctx.reply(currentUser.recievedGift);
   ctx.reply(currentUser.recievedGift ? 'true' : 'false');
 
