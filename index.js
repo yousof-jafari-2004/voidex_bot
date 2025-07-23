@@ -561,6 +561,60 @@ bot.hears(['📞 پشتیبانی و سوالات', '/contact'], ctx => {
 `);
 });
 
+bot.hears(['📝 ثبت‌نام (دریافت هدیه)', '/register'], async (ctx) => {
+  let currentUser = await User.findOne({telegramId: String(ctx.from.id)});
+  // if user already claimed his gift don't give it again
+  if(currentUser.recievedGift)
+  {
+    return ctx.reply('شما قبلا هدیه خود را دریافت کرده اید');
+  }else {
+    ctx.answerCbQuery();
+    waitingForName.add(ctx.from.id);
+    ctx.reply('لطفا نام خود را وارد کنید');
+  }
+});
+
+// دریافت پیام متنی از کاربر
+bot.on('text', async (ctx) => {
+  const userId = ctx.from.id;
+  const text = ctx.message.text;
+
+  // مرحله ۱: ذخیره نام
+  if (waitingForName.has(userId)) {
+    waitingForName.delete(userId);
+    waitingForPhone.add(userId);
+
+    await User.findOneAndUpdate(
+      { telegramId: String(userId) },
+      { first_name: text, recievedGift: true },
+      { new: true }
+    );
+
+    return ctx.reply('✅ نام ذخیره شد. حالا لطفاً شماره تماس خود را وارد کنید:');
+  }
+
+  // مرحله ۲: ذخیره شماره تماس
+  if (waitingForPhone.has(userId)) {
+    waitingForPhone.delete(userId);
+
+    await User.findOneAndUpdate(
+      { telegramId: String(userId) },
+      { phoneNumber: text, recievedGift: true },
+    );
+
+    const theUser = await User.findOne({ telegramId: String(userId) });
+
+    await ctx.reply(`✅ شماره شما ذخیره شد: ${text}`);
+    await ctx.reply(`🎁 این هم کانفیگ تست رایگان شما`);
+    await ctx.reply(`${theUser.vpn_server}`);
+    return await ctx.reply(`توجه کنید که این کانفیگ فقط تا ۲۴ ساعت آینده فعال هست و بعد از اون غیر فعال میشه`);
+  }
+
+  // اگر کاربر در روند ثبت‌نام نبود
+  ctx.reply('برای شروع دستور /start رو بفرست و روی دکمه "ثبت‌نام" بزن.');
+});
+
+
 bot.hears(['📋 تمامی پلن ها', '/plans'], (ctx) => {
   ctx.reply(`🔰 پلن اقتصادی | 🌱 Basic
 
