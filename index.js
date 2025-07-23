@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 
 // admin telegram id
-const ADMIN_ID = '123456789';
+const ADMIN_ID = '6956422313';
 // is user registered
 let AUTH = false;
 // what is the current user plan
