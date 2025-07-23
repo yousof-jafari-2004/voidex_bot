@@ -257,7 +257,7 @@ bot.action('myPlan', async ctx => {
 
 // ثبت‌نام - مرحله اول: دریافت نام
 bot.action('register', async (ctx) => {
-  let currentUser = await User.findOne(String(ctx.from.telegramId));
+  let currentUser = await User.findOne(String(ctx.from.id));
 
   // if user already claimed his gift don't give it again
   if(currentUser.recievedGift)
