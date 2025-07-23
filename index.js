@@ -3,6 +3,13 @@ const { Telegraf, Markup } = require('telegraf');
 const mongoose = require('mongoose');
 const User = require('./models/user');
 
+// admin telegram id
+const ADMIN_ID = '123456789';
+// is user registered
+let AUTH = false;
+// what is the current user plan
+let userPlanRequest;
+
 // اتصال به MongoDB
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('✅ MongoDB وصل شد'))
@@ -36,6 +43,8 @@ bot.start(async (ctx) => {
       recievedGift: false,
       isAdmin: false,
     });
+  }else {
+    AUTH = existingUser.phoneNumber == '' ? false : true;
   }
 
   await ctx.reply(
@@ -77,6 +86,8 @@ bot.start(async (ctx) => {
     ])
   );
 });
+
+bot.
 
 bot.action('contact', ctx => {
   ctx.reply();
@@ -186,42 +197,51 @@ const payDetailsMessage = botFuncs => {
 // basic plan
 bot.action('1_mounth_b', (ctx) => {
   price = 68;
+  userPlanRequest = '1_mounth_b';
   payDetailsMessage(ctx);
 });
 bot.action('3_mounth_b', (ctx) => {
   price = 178;
+  userPlanRequest = '3_mounth_b';
   payDetailsMessage(ctx);
 });
 bot.action('6_mounth_b', (ctx) => {
   price = 356;
+  userPlanRequest = '6_mounth_b';
   payDetailsMessage(ctx);
 });
 
 // pro plan
 bot.action('1_mounth_p', (ctx) => {
   price = 98;
+  userPlanRequest = '1_mounth_p';
   payDetailsMessage(ctx);
 });
 bot.action('3_mounth_p', (ctx) => {
   price = 268;
+  userPlanRequest = '3_mounth_p';
   payDetailsMessage(ctx);
 });
 bot.action('6_mounth_p', (ctx) => {
   price = 536;
+  userPlanRequest = '6_mounth_p';
   payDetailsMessage(ctx);
 });
 
 // vip plan
 bot.action('1_mounth_v', (ctx) => {
   price = 138;
+  userPlanRequest = '1_mounth_v';
   payDetailsMessage(ctx);
 });
 bot.action('3_mounth_v', (ctx) => {
   price = 388;
+  userPlanRequest = '3_mounth_v';
   payDetailsMessage(ctx);
 });
 bot.action('6_mounth_v', (ctx) => {
   price = 776;
+  userPlanRequest = '6_mounth_v';
   payDetailsMessage(ctx);
 });
 
@@ -311,6 +331,36 @@ bot.on('text', async (ctx) => {
 
   // اگر کاربر در روند ثبت‌نام نبود
   ctx.reply('برای شروع دستور /start رو بفرست و روی دکمه "ثبت‌نام" بزن.');
+});
+
+// recieve photo and send it to admin
+bot.on('photo', async (ctx) => {
+  const userId = ctx.from.id;
+
+  const userData = User.findOne({ telegramId: userId });
+
+  // عکس‌ها به صورت آرایه‌ای از سایزهای مختلف میان، ما بزرگ‌ترین رو می‌گیریم:
+  const largestPhoto = ctx.message.photo[ctx.message.photo.length - 1];
+
+  const fileId = largestPhoto.file_id;
+
+  try {
+    // ارسال فایل به ادمین
+    await ctx.telegram.sendPhoto(ADMIN_ID, fileId, {
+      caption: `عکس از طرف کاربر: ${ctx.from.first_name} (@${ctx.from.username || 'بدون یوزرنیم'})
+        آی دی کاربر : ${userData.telegramId}
+        نام : ${userData.first_name || 'بدون اسم'}
+        شماره تماس : ${ userData.phoneNumber || 'تعین نکرده' }
+        پلن درخواستی کاربر : ${ userPlanRequest || 'تعین نکرده' }
+        قیمت : ${ price || 'تعین نکرده' }
+      `,
+    });
+
+    await ctx.reply("✅ عکس با موفقیت ارسال شد.");
+  } catch (error) {
+    console.error("خطا در ارسال عکس:", error);
+    await ctx.reply("❌ مشکلی در ارسال عکس پیش آمد.");
+  }
 });
 
 // اجرای بات
