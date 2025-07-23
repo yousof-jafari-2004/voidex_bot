@@ -85,7 +85,7 @@ bot.start(async (ctx) => {
   }
 
   // check if the user is admin or not
-  (existingUser.isAdmin) ? isAdmin == true : false;
+  (existingUser.telegramId == ctx.from.id) ? isAdmin == true : false;
 
   // تنظیم منوی چسبان
   setupPersistentMenu();
