@@ -303,8 +303,7 @@ bot.on('text', async (ctx) => {
 
     await User.findOneAndUpdate(
       { telegramId: String(userId) },
-      { first_name: text },
-      { recievedGift: true },
+      { first_name: text, recievedGift: true },
       { new: true }
     );
 
@@ -317,8 +316,7 @@ bot.on('text', async (ctx) => {
 
     await User.findOneAndUpdate(
       { telegramId: String(userId) },
-      { phoneNumber: text },
-      { recievedGift: true }
+      { phoneNumber: text, recievedGift: true },
     );
 
     const theUser = await User.findOne({ telegramId: String(userId) });
