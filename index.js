@@ -257,7 +257,7 @@ bot.action('myPlan', async ctx => {
 
 // ثبت‌نام - مرحله اول: دریافت نام
 bot.action('register', async (ctx) => {
-  let currentUser = await User.findOne(String(ctx.from.id));
+  let currentUser = await User.findOne({telegramId: String(ctx.from.id)});
 
   ctx.reply(`your name: ${currentUser.telegramId}`);
 
