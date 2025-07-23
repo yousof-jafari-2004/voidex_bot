@@ -823,6 +823,35 @@ bot.action('6_mounth_v', (ctx) => {
   payDetailsMessage(ctx);
 });
 
+// recieve photo and send it to admin
+bot.on('photo', async (ctx) => {
+  const userId = ctx.from.id;
+
+  const userData = await User.findOne({ telegramId: userId });
+
+  // عکس‌ها به صورت آرایه‌ای از سایزهای مختلف میان، ما بزرگ‌ترین رو می‌گیریم:
+  const largestPhoto = ctx.message.photo[ctx.message.photo.length - 1];
+
+  const fileId = largestPhoto.file_id;
+
+  try {
+    // ارسال فایل به ادمین
+    await ctx.telegram.sendPhoto(ADMIN_ID, fileId, {
+      caption: `عکس از طرف کاربر: ${ctx.from.first_name} (@${ctx.from.username || 'بدون یوزرنیم'})
+        آی دی کاربر : ${userData.telegramId}
+        نام : ${userData.first_name || 'بدون اسم'}
+        شماره تماس : ${ userData.phoneNumber || 'تعین نکرده' }
+        پلن درخواستی کاربر : ${ userPlanRequest || 'تعین نکرده' }
+        قیمت : ${ price || 'تعین نکرده' }
+      `,
+    });
+
+    await ctx.reply("بسته شما تا ۱ ساعت آینده فعال سازی و توسط همین ربات به شما اطلاع داده میشود. ✅ عکس با موفقیت ارسال شد.");
+  } catch (error) {
+    console.error("خطا در ارسال عکس:", error);
+    await ctx.reply("❌ مشکلی در ارسال عکس پیش آمد. لطفا دوباره تلاش کنید");
+  }
+});
 
 // بقیه کدها دقیقاً مانند قبل باقی می‌مانند...
 // [همه کدهای قبلی شما از اینجا به بعد بدون تغییر باقی می‌مانند]
