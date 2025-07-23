@@ -90,7 +90,7 @@ bot.start(async (ctx) => {
 bot.
 
 bot.action('contact', ctx => {
-  ctx.reply();
+  ctx.reply('لطفا پیام خود را بنویسید, پاسخ شما یا از طریق تماس, پیامک و یا در همین بات به شما ارسال میشود');
 });
 
 bot.action('plans', (ctx) => {
@@ -356,10 +356,10 @@ bot.on('photo', async (ctx) => {
       `,
     });
 
-    await ctx.reply("✅ عکس با موفقیت ارسال شد.");
+    await ctx.reply("بسته شما تا ۱ ساعت آینده فعال سازی و توسط همین ربات به شما اطلاع داده میشود. ✅ عکس با موفقیت ارسال شد.");
   } catch (error) {
     console.error("خطا در ارسال عکس:", error);
-    await ctx.reply("❌ مشکلی در ارسال عکس پیش آمد.");
+    await ctx.reply("❌ مشکلی در ارسال عکس پیش آمد. لطفا دوباره تلاش کنید");
   }
 });
 
