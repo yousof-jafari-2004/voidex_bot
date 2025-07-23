@@ -229,10 +229,22 @@ bot.action('6_mounth_v', (ctx) => {
 bot.action('myPlan', async ctx => {
   let userData = await User.findOne({telegramId:ctx.from.telegramId});
 
-  ctx.reply(`
+  let planType;
+
+  if(userData.plan == 'basic'){
+    planType = '🔰 پلن اقتصادی ';
+  } else if(userData.plan == 'pro'){
+    planType = '🚀 پلن پیشرفته ';
+  } else if(userData.plan == 'vip'){
+    planType = '👑 پلن ویژه' 
+  }else {
+    planType = '🎁 هدیه یک روزه';
+  }
+
+  await ctx.reply(`
     اطلاعات بسته فعلی شما:
     ــــــــــــــــــــــ
-    نام بسته: 🔰 پلن اقتصادی 
+    نام بسته: ${ planType } 
     وضعیت بسته : فعال
     مدت اعتبار بسته: ۳۹ روز مانده
     حجم مصرفی شما: ۳۹ گیگ مصرف کرده اید
