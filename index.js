@@ -227,7 +227,7 @@ bot.action('6_mounth_v', (ctx) => {
 
 // my plan description
 bot.action('myPlan', async ctx => {
-  let userData = await User.findOne({telegramId:ctx.from.telegramId});
+  let userData = await User.findOne({telegramId:ctx.from.id});
 
   let planType;
 
