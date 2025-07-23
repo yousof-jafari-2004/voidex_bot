@@ -642,7 +642,7 @@ bot.command('about', ctx => {
 });
 
 // choose the service
-bot.action('basic', (ctx) => {
+bot.hears('basic', (ctx) => {
   ctx.reply(`سرویس مورد نظر را انتخاب کنید
     شما میتوانید با ارتباط با پشتیبانی حجم بسته خود را افزایش دهید`,
     Markup.inlineKeyboard([
@@ -653,7 +653,7 @@ bot.action('basic', (ctx) => {
   );
 });
 
-bot.action('pro', (ctx) => {
+bot.hears('pro', (ctx) => {
   ctx.reply(`سرویس مورد نظر را انتخاب کنید`,
     Markup.inlineKeyboard([
       [Markup.button.callback('سرویس یک ماهه | ۹۸ هزار تومان', '1_mounth_p')],
@@ -663,7 +663,7 @@ bot.action('pro', (ctx) => {
   );
 });
 
-bot.action('vip', (ctx) => {
+bot.hears('vip', (ctx) => {
   ctx.reply(`سرویس مورد نظر را انتخاب کنید`,
     Markup.inlineKeyboard([
       [Markup.button.callback('سرویس یک ماهه | ۱۳۸ هزار تومان', '1_mounth_v')],
@@ -687,57 +687,57 @@ const payDetailsMessage = (botFuncs) => {
 };
 
 // basic plan
-bot.action('1_mounth_b', (ctx) => {
+bot.hears('1_mounth_b', (ctx) => {
   price = 68;
   userPlanRequest = '1_mounth_b';
   payDetailsMessage(ctx);
 });
 
-bot.action('3_mounth_b', (ctx) => {
+bot.hears('3_mounth_b', (ctx) => {
   price = 178;
   userPlanRequest = '3_mounth_b';
   payDetailsMessage(ctx);
 });
 
-bot.action('6_mounth_b', (ctx) => {
+bot.hears('6_mounth_b', (ctx) => {
   price = 356;
   userPlanRequest = '6_mounth_b';
   payDetailsMessage(ctx);
 });
 
 // pro plan
-bot.action('1_mounth_p', (ctx) => {
+bot.hears('1_mounth_p', (ctx) => {
   price = 98;
   userPlanRequest = '1_mounth_p';
   payDetailsMessage(ctx);
 });
 
-bot.action('3_mounth_p', (ctx) => {
+bot.hears('3_mounth_p', (ctx) => {
   price = 268;
   userPlanRequest = '3_mounth_p';
   payDetailsMessage(ctx);
 });
 
-bot.action('6_mounth_p', (ctx) => {
+bot.hears('6_mounth_p', (ctx) => {
   price = 536;
   userPlanRequest = '6_mounth_p';
   payDetailsMessage(ctx);
 });
 
 // vip plan
-bot.action('1_mounth_v', (ctx) => {
+bot.hears('1_mounth_v', (ctx) => {
   price = 138;
   userPlanRequest = '1_mounth_v';
   payDetailsMessage(ctx);
 });
 
-bot.action('3_mounth_v', (ctx) => {
+bot.hears('3_mounth_v', (ctx) => {
   price = 388;
   userPlanRequest = '3_mounth_v';
   payDetailsMessage(ctx);
 });
 
-bot.action('6_mounth_v', (ctx) => {
+bot.hears('6_mounth_v', (ctx) => {
   price = 776;
   userPlanRequest = '6_mounth_v';
   payDetailsMessage(ctx);
