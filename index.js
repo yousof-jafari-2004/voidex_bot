@@ -84,8 +84,18 @@ bot.start(async (ctx) => {
     AUTH = existingUser.phoneNumber == '' ? false : true;
   }
 
+  ctx.reply(ADMIN_ID);
+  ctx.reply(ctx.from.id);
+  ctx.reply(ADMIN_ID == ctx.from.id);
   // check if the user is admin or not
-  (ADMIN_ID == ctx.from.id) ? isAdmin = true : isAdmin =false;
+  if(ADMIN_ID == ctx.from.id)
+  {
+    ctx.reply('true');
+    isAdmin = true
+  }else {
+    ctx.reply('false')
+    isAdmin = false;
+  }
 
   // تنظیم منوی چسبان
   setupPersistentMenu();
