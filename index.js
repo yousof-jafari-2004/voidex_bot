@@ -308,15 +308,21 @@ bot.hears(['ℹ️ راهنمای کامل', '/about'], ctx => {
 });
 
 bot.hears(['تعداد کاربران', '/users_count'], async ctx => {
-  await ctx.reply(`تعداد کل کاربر های ثبت نام کرده ${getUserStats(ctx)}`);
+  await ctx.reply(`تعداد کل کاربر های ثبت نام کرده ${await getUserStats(ctx)}`);
 });
 
 bot.hears(['اطلاعات کل کاربر ها', '/users_list'], async ctx => {
   let allUsers = await getAllUsers(ctx);
   allUsers.forEach(theUser => {
     ctx.reply(`نام :${theUser.first_name}
-      آی دی :${theUser.telegramId}
-      شماره تماس :${theUser.telegramId}`);
+یوزر نیم :${theUser.username}
+آی دی :${theUser.telegramId}
+شماره تماس :${theUser.phoneNumber}
+پلن فعلی کاربر :${theUser.plan}
+آیا هدیه گرفته؟:${theUser.recievedGift ? 'yes' : 'no'}
+سرور کاربر :${theUser.vpn_server}
+
+`);
   });
 });
 
