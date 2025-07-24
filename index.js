@@ -307,11 +307,11 @@ bot.hears(['ℹ️ راهنمای کامل', '/about'], ctx => {
   `);
 });
 
-bot.hears(['تعداد کاربران', 'users_count'], async ctx => {
+bot.hears(['تعداد کاربران', '/users_count'], async ctx => {
   await ctx.reply(`تعداد کل کاربر های ثبت نام کرده ${getUserStats(ctx)}`);
 });
 
-bot.hears(['اطلاعات کل کاربر ها', 'users_list'], async ctx => {
+bot.hears(['اطلاعات کل کاربر ها', '/users_list'], async ctx => {
   let allUsers = await getAllUsers(ctx);
   allUsers.forEach(theUser => {
     ctx.reply(`نام :${theUser.first_name}
