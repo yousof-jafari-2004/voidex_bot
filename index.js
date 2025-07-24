@@ -59,6 +59,27 @@ const setupPersistentMenu = () => {
   }
 };
 
+
+// fetch users count
+const getUserStats = async btt => {
+  try {
+    const totalUsers = await User.countDocuments();
+    return totalUsers;
+  } catch (err) {
+    btt.reply('ارور هنگام دریافت تعداد کاربران');
+  }
+}
+
+// fetch users details
+const getAllUsers = async () => {
+  try {
+    const users = await User.find();
+    return users;
+  } catch (err) {
+    btt.reply('ارور هنگام دریافت کاربران');
+  }
+}
+
 // شروع بات
 bot.start(async (ctx) => {
   const { id, username, first_name } = ctx.from;
@@ -284,6 +305,19 @@ bot.hears(['ℹ️ راهنمای کامل', '/about'], ctx => {
 
 💬 اگه سوال دیگه‌ای داری، می‌تونی از منوی اصلی گزینه «پشتیبانی و سوالات» رو انتخاب کنی.
   `);
+});
+
+bot.hears(['تعداد کاربران', 'users_count'], async ctx => {
+  await ctx.reply(`تعداد کل کاربر های ثبت نام کرده ${getUserStats(ctx)}`);
+});
+
+bot.hears(['اطلاعات کل کاربر ها', 'users_list'], async ctx => {
+  let allUsers = await getAllUsers(ctx);
+  allUsers.forEach(theUser => {
+    ctx.reply(`نام :${theUser.first_name}
+      آی دی :${theUser.telegramId}
+      شماره تماس :${theUser.telegramId}`);
+  });
 });
 
 // دریافت پیام متنی از کاربر
