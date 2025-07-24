@@ -52,6 +52,7 @@ const setupPersistentMenu = () => {
       { command: 'register', description: 'ثبت‌نام' },
       { command: 'messages', description: 'پیام ها' },
       { command: 'change_user_plan', description: 'ویرایش پلن کاربر' },
+      { command: 'change_user_plan', description: 'ویرایش سرور کاربر' },
       { command: 'send_message', description: 'فرستادن پیام به کاربر' },
       { command: 'users_count', description: 'تعداد کاربران' },
       { command: 'users_list', description: 'لیست کاربران' }
@@ -308,12 +309,19 @@ bot.hears(['ℹ️ راهنمای کامل', '/about'], ctx => {
 });
 
 bot.hears(['تعداد کاربران', '/users_count'], async ctx => {
-  await ctx.reply(`تعداد کل کاربر های ثبت نام کرده ${await getUserStats(ctx)}`);
+  if(isAdmin)
+  {
+    await ctx.reply(`تعداد کل کاربر های ثبت نام کرده ${await getUserStats(ctx)}`);
+  }else {
+    ctx.reply('شما ادمین نیستید');
+  }
 });
 
 bot.hears(['اطلاعات کل کاربر ها', '/users_list'], async ctx => {
-  let allUsers = await getAllUsers(ctx);
-  allUsers.forEach(theUser => {
+  if(isAdmin)
+  {
+    let allUsers = await getAllUsers(ctx);
+    allUsers.forEach(theUser => {
     ctx.reply(`نام :${theUser.first_name}
 یوزر نیم :${theUser.username}
 آی دی :${theUser.telegramId}
@@ -322,8 +330,11 @@ bot.hears(['اطلاعات کل کاربر ها', '/users_list'], async ctx => {
 آیا هدیه گرفته؟:${theUser.recievedGift ? 'yes' : 'no'}
 سرور کاربر :${theUser.vpn_server}
 
-`);
-  });
+    `);
+      });
+  }else {
+    ctx.reply('شما ادمین نیستید');
+  }
 });
 
 // دریافت پیام متنی از کاربر
